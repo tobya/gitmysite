@@ -53,7 +53,7 @@ http://www.draconianoverlord.com/2010/03/04/git-config.html
 	<body>
 		<div class="demo">
 					<div class="header ui-widget-content ">
-						<p>Git My Site <? echo $_SERVER['SERVER_NAME']; ?></p>
+						<p>Git My Site <?php echo $_SERVER['SERVER_NAME']; ?></p>
 					</div>		
 			<div id="tabs">
 				<ul>
