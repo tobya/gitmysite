@@ -52,9 +52,9 @@ http://www.draconianoverlord.com/2010/03/04/git-config.html
 	</head>
 	<body>
 		<div class="demo">
-					<div class="header ui-widget-content ">
-						<p>Git My Site <?php echo $_SERVER['SERVER_NAME']; ?></p>
-					</div>		
+			<div class="header ui-widget-content ">
+				<p>Git My Site <?php echo $_SERVER['SERVER_NAME']; ?></p>
+			</div>
 			<div id="tabs">
 				<ul>
 					<li><a href="#gitmysite_setup">Setup</a></li>
@@ -67,7 +67,6 @@ http://www.draconianoverlord.com/2010/03/04/git-config.html
 						<p>Click tabs to swap between content that is broken into logical sections.</p>
 					</div>
 					<!-- End demo-description -->
-
 					<p class="sectionheader">Create a New Repository in this Directory </p>
 					<p><a href="gitmysite.php?action=init">Create git Repository</a> 
 					- </p>
@@ -93,28 +92,23 @@ http://www.draconianoverlord.com/2010/03/04/git-config.html
 						<input type="submit" name="Submit" value="Submit">
 						</p>
 					</form>
-	<p class="sectionheader">Create and Edit Git Ignore File </p>
-				  <?php if ($mySite->file_gitignore > '') {  ?>
+					<p class="sectionheader">Create and Edit Git Ignore File </p>
+					<?php if ($mySite->file_gitignore > '') {  ?>
 					<form action=gitmysite.php method=post>
-					
 						<textarea name='content_gitignore' cols="40" rows="12"><?php echo $mySite->file_gitignore ; ?></textarea>
-					
 						<input type=hidden  name="action" value="editgitignore">
 						<input type="submit" name="Submit" value="Submit">
 					</form>
 					<?php } 
 					else
 					{
-					
 					?>
 					<p><a href="gitmysite.php?action=creategitignore">Create .gitignore</a> </p>
 					<p><a href="gitmysite.php?action=showgitignore">Edit .gitignore</a> </p>
-					
 					<?php } ?>
 				</div>
 				<div id="gitmysite_commit">
 					<p>&nbsp; </p>
-
 					<p><a href="gitmysite.php?action=add">Add New &amp; Updated Files</a> - 
 					Commit Files
 					<form name="form1" method="get" action="gitmysite.php">
@@ -127,31 +121,28 @@ http://www.draconianoverlord.com/2010/03/04/git-config.html
 					</form>
 				</div>
 				<div id="gitmysite_status">
-					- <a href="gitmysite.php?action=status#gitmysite_results">Status</a> - <a href="gitmysite.php?action=diff#gitmysite_results">Diff of Changes</a>- <a href="gitmysite.php?action=log#gitmysite_results">Log</a> -</p>
-					<div class="results">
-					</div>
 				</div>
 				<div  id="gitmysite_results">
-			
-			<p>Command Results </p>
-			<p>  
-			<?php
-			if (isset($mySite) )
-			{ 
-			foreach ($mySite->gitOutput as $line)
-			{
-			echo "<BR>$line
-			";
-			}
-			}
-			?>
-			</p>
-				
+					- <a href="gitmysite.php?action=status#gitmysite_results">Status</a> -  <a href="gitmysite.php?action=log#gitmysite_results">Log</a> -</p>
+					<div class="results">
+					</div>
+					<p>Command Results </p>
+					<p>  
+					<?php
+					if (isset($mySite) )
+					{ 
+					foreach ($mySite->gitOutput as $line)
+					{
+					echo "<BR>$line
+					";
+					}
+					}
+					?>
+					</p>
 				</div>
 			</div>
-			</div>
-			<!-- End demo -->
-
+		</div>
+		<!-- End demo -->
 		<p>&nbsp;</p>
 	</body>
 </html>
