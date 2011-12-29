@@ -27,7 +27,7 @@ http://www.draconianoverlord.com/2010/03/04/git-config.html
 	font-size: small;
 	font-weight: italic;
 	color: #ffffff;
-	width: 400px;
+	width: 600px;
 
 }
 .header {
@@ -41,6 +41,7 @@ http://www.draconianoverlord.com/2010/03/04/git-config.html
 	color: #0099CC;
 	background-color: #CCCCCC;
 	border: 1px #660066;
+	width: 600px;
 }
 -->
 		</style>
@@ -71,12 +72,13 @@ http://www.draconianoverlord.com/2010/03/04/git-config.html
 					<p><a href="gitmysite.php?action=init">Create git Repository</a> 
 					- </p>
 					<p class="sectionheader">Secure the Directory</p>
-					<div class="sectioncomments">Provide a username and password to secure your .git directory.  You can also use this username and password when you clone your repo to your local machine.  <strong>Note:</strong>  Clicking Submit will overwrite any existing .htaccess and .htpasswd file you have in the .git folder, so if you have changed it do not edit from here.</div>
-					<form name="form2" method="get" action="gitmysite.php">
+					<div class="sectioncomments">Provide a username and password to secure your .git directory.  You can also use this username and password when you clone your repo to your local machine.  
+					<strong>Note:</strong>  Clicking Submit will not overwrite any existing .htaccess and .htpasswd file you have in the .git folder. Please delete first or edit manually</div>
+					<form name="form2" method="post" action="gitmysite.php#gitmysite_results">
 						Username:
 						<input type="text" name="apache_username"> <BR>
 						Password:
-						<input type="text" name="apache_pass"><BR>
+						<input type="password" name="apache_pass"><BR>
 						<input type=hidden value="apache_secure" name="action" >
 						<input type="submit" name="Submit2" value="Submit">
 					</form>
@@ -124,10 +126,11 @@ http://www.draconianoverlord.com/2010/03/04/git-config.html
 				</div>
 				<div  id="gitmysite_results">
 					- <a href="gitmysite.php?action=status#gitmysite_results">Status</a> -  <a href="gitmysite.php?action=log#gitmysite_results">Log</a> -</p>
-					<div class="results">
-					</div>
+			
 					<p>Command Results </p>
-					<p>  
+					 
+							<div class="results">
+				
 					<?php
 					if (isset($mySite) )
 					{ 
@@ -137,8 +140,8 @@ http://www.draconianoverlord.com/2010/03/04/git-config.html
 					";
 					}
 					}
-					?>
-					</p>
+					?>	</div>
+				
 				</div>
 			</div>
 		</div>

@@ -194,12 +194,12 @@ require valid-user
   {
     if (file_exists('.git/.htaccess'))
     {
-      echo 'yes';
+      //echo 'yes';
       return true;
     }
     else
     {
-    echo 'no';
+      //echo 'no';
       return false;
     }
   }
