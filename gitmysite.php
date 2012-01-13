@@ -1,9 +1,9 @@
 <?php
 //include("gitscript.php");
-if (isset($_GET['action'] ))
+//if (isset($_REQUEST['action'] ))
 {
 $mySite = new gitmysite();
-$mySite->exec($_GET['action'], $_GET);
+$mySite->exec($_REQUEST['action'], $_REQUEST);
 }
 /*
 Some interesting git resources
@@ -47,7 +47,9 @@ http://www.draconianoverlord.com/2010/03/04/git-config.html
 		</style>
 		<script>
 	$(function() {
-		$( "#tabs" ).tabs();
+	  var $tabs;
+		$tabs = $( "#tabs" ).tabs();
+
 	});
 		</script>
 	</head>
