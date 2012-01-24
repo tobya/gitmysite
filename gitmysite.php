@@ -3,7 +3,7 @@
 //if (isset($_REQUEST['action'] ))
 {
 $mySite = new gitmysite();
-$mySite->exec($_REQUEST['action'], $_REQUEST);
+$mySite->exec(@$_REQUEST['action'], $_REQUEST);
 }
 /*
 Some interesting git resources
@@ -174,7 +174,8 @@ class gitmysite
     
     function exec($usercmd, $QueryVars)
     {
-	
+		if ($usercmd == '') {return;}
+		
 		$this->QueryVars = $QueryVars;
 		 // $this->getgitIgnoreFile();	
     	  $Require_Execute = true;
