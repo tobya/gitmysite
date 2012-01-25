@@ -1,10 +1,10 @@
 <?php
-//include("gitscript.php");
-//if (isset($_REQUEST['action'] ))
-{
+
+
+
 $mySite = new gitmysite();
 $mySite->exec(@$_REQUEST['action'], $_REQUEST);
-}
+
 /*
 Some interesting git resources
 http://www.draconianoverlord.com/2010/03/04/git-config.html
@@ -69,7 +69,7 @@ http://www.draconianoverlord.com/2010/03/04/git-config.html
 					<div class="demo-description" style="display: none; ">
 						<p>Click tabs to swap between content that is broken into logical sections.</p>
 					</div>
-					<!-- End demo-description -->
+		
 					<p class="sectionheader">Create a New Repository in this Directory </p>
 					<p><a href="gitmysite.php?action=init">Create git Repository</a> 
 					- </p>
@@ -131,23 +131,23 @@ http://www.draconianoverlord.com/2010/03/04/git-config.html
 			
 					<p>Command Results </p>
 					 
-							<div class="results">
+					<div class="results">
 				
 					<?php
 					if (isset($mySite) )
 					{ 
-					foreach ($mySite->gitOutput as $line)
-					{
-					echo "<BR>$line
-					";
+						foreach ($mySite->gitOutput as $line)
+						{
+							echo "<BR>$line ";
+						}
 					}
-					}
-					?>	</div>
+					?>	
+					</div>
 				
 				</div>
 			</div>
 		</div>
-		<!-- End demo -->
+
 		<p>&nbsp;</p>
 	</body>
 </html>
@@ -179,7 +179,8 @@ class gitmysite
 		$this->QueryVars = $QueryVars;
 		 // $this->getgitIgnoreFile();	
     	  $Require_Execute = true;
-    	  $output = array();
+    	 //$output = 
+    	  $this->gitOutput = array();
     	//Check if gitcommand is allowed.  
     	if (strpos($this->allowed_actions, $usercmd) !== false)
     	{
@@ -238,17 +239,17 @@ class gitmysite
             	$this->gitCommand = implode(';', $gitexec);
             	foreach ($gitexec as $cmd)
             	{
-        		  exec("git " . $cmd, $output); 
+        		  exec("git " . $cmd,  $this->gitOutput); 
         		 // echo "git " . $cmd;
         		 
         		}
             //because we are a dumb server, call serverupdate
         		 
-        		exec("git update-server-info", $output);
+        		exec("git update-server-info",  $this->gitOutput);
         		
         	}
         	
-        	$this->gitOutput = $output;
+        	
     	}  
     	else
     	{
@@ -272,13 +273,11 @@ AuthType Basic
 require valid-user
 </Limit>
 ";
-		//print_r($file_htaccess);
-				// md5(
+
 				$realm = '';
 				$md5pass = md5($apacheuser . ':' . $realm . ':' .$apachepass);
-		//admin:cPwAL5yUQy6jw
+
 		$file_htpass = "$apacheuser:$md5pass";
-		//print_r($file_htpass);		
 		$this->CreateFile('.git/.htaccess', $file_htaccess);
 		$this->CreateFile('.git/.htpasswd', $file_htpass);		
     
@@ -314,8 +313,9 @@ require valid-user
   {
     $myFile = $FileName;
     $fh = fopen($myFile, 'w') or die("can't open file");
-    echo fwrite($fh, $Content);
+    $size = fwrite($fh, $Content);
     fclose($fh);  
+    return $size;
   }
   
   function get_gitIgnoreFile()
@@ -365,6 +365,11 @@ require valid-user
   	$Issues[] = "Properly encode .htpasswd apache passwords";
   
   	return $Issues;
+  }
+  
+  function Version()
+  {
+  	return '0.4';
   }
 }
   
