@@ -1,15 +1,25 @@
-h1. Git My Site 
+Git My Site 
+===========
+
 
 A simple script to maintain a git repository of your custom site via a php script.
 
 This is different to having a fully blown git instance on your server.  It is essentially a readonly repo from outside the server.  The php script 'gitmysite.php' has a number of commands it can carry out primarily based around adding and committing (no branching, merging etc, thats too complex for this).  You can clone the repo to your own machine via http access, but you cant publish to the online repo.  It is purely to give you a record of what you have changed if like me you are in a situation where you need to edit live / production files without using an intermediate source code repository.
 
-h2. Security
+Security
+--------
 
 Please Note:  If someone gets access to the password you have set they can very easily clone a copy of your entire website via http://www.mysite.com/.git, therefore it is important you understand the risks before installing this script.
 
+When you first visit the script at http://www.yoursite.com/gitmysite.php you will be asked for a password.  This password should be set by you on the firstline of the script.  This is very basic security.  Once you have created the .git repository, you have the option of setting a password for the .git folder via a .htaccess file *This is Strongly Recommended* and will probably be forced soon.
 
+Obviously you should pick a decent password since anyone who can guess your password can clone a copy of you site by doing the following.
 
-h2. Single File.
+*  git clone http://username:password@www.yoursite.com/.git/ CloneIntoDirectory
+
+pick a good password.
+
+Single File.
+------------
 
 The only file you need to upload to your site is the ??'gitmysite.php'?? file, the .gitignore file will be created for you.
