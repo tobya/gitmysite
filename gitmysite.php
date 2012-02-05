@@ -224,8 +224,29 @@ require valid-user
   
   function Version()
   {
-  	return '0.4';
+  	return '0.4.2';
   }
+  
+  function GitRepoExists()
+  {
+  
+  	if (file_exists('.git'))
+  	{
+  		return true;
+  	}
+  	
+  	return false;
+  
+  }
+  
+	function GitRepoRoot()
+	{
+		$ScriptFile =	$_SERVER['PHP_SELF'];
+		$info  = pathinfo($ScriptFile);
+		
+		return $_SERVER['SERVER_NAME'] . $info['dirname'];
+	
+	}  
 }
   
 ?>
@@ -276,7 +297,7 @@ require valid-user
 	<body>
 		<div class="demo">
 			<div class="header ui-widget-content ">
-				<p>Git My Site <?php echo $_SERVER['SERVER_NAME']; ?></p>
+				<p>Git My Site  <?php echo $mySite->Version() .':' ; echo $mySite->GitRepoRoot(); ?> </p>
 			</div>
 			<div id="tabs">
 				<ul>
@@ -289,10 +310,11 @@ require valid-user
 					<div class="demo-description" style="display: none; ">
 						<p>Click tabs to swap between content that is broken into logical sections.</p>
 					</div>
-		
+					<?php if (!$mySite->GitRepoExists()){ ?>
 					<p class="sectionheader">Create a New Repository in this Directory </p>
 					<p><a href="gitmysite.php?action=init">Create git Repository</a> 
 					- </p>
+					<?php }; ?>
 					<p class="sectionheader">Secure the Directory</p>
 					<div class="sectioncomments">Provide a username and password to secure your .git directory.  You can also use this username and password when you clone your repo to your local machine.  
 					<strong>Note:</strong>  Clicking Submit will not overwrite any existing .htaccess and .htpasswd file you have in the .git folder. Please delete first or edit manually</div>
@@ -321,7 +343,7 @@ require valid-user
 					<form action=gitmysite.php method=post>
 						<textarea name='content_gitignore' cols="40" rows="12"><?php echo $mySite->file_gitignore ; ?></textarea>
 						<input type=hidden  name="action" value="editgitignore">
-						<input type="submit" name="Submit" value="Submit">
+						<input type="submit" name="Submit" value="Save .gitignore">
 					</form>
 					<?php } 
 					else
