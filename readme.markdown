@@ -17,9 +17,12 @@ Obviously you should pick a decent password since anyone who can guess your pass
 
 *  git clone http://username:password@www.yoursite.com/.git/ CloneIntoDirectory
 
+The Script assumes you are the only one with access to the .git directory from the ftp or server side, so once a .htaccess file with a password has been created, it cannot be updated by the script.  You must delete the files via ftp first.  This prevents someone who gets access to the gitmysite.php script from changing the password to your repo. 
+
 pick a good password.
 
 Single File.
 ------------
 
-The only file you need to upload to your site is the ??'gitmysite.php'?? file, the .gitignore file will be created for you.
+The only file you need to upload to your site is the ??'gitmysite.php'?? file, the .gitignore file will be created for you.  I wanted to do this to make it as simple as possible to install, as a result the file might be a bit confusing to read, but I feel it is worth the tradeoff.
+
