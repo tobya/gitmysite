@@ -152,10 +152,9 @@ require valid-user
 </Limit>
 ";
 
-				$realm = '';
-				$md5pass = md5($apacheuser . ':' . $realm . ':' .$apachepass);
+		$cryptpass = crypt($apachepass);
 
-		$file_htpass = "$apacheuser:$md5pass";
+		$file_htpass = "$apacheuser:$cryptpass";
 		$this->CreateFile('.git/.htaccess', $file_htaccess);
 		$this->CreateFile('.git/.htpasswd', $file_htpass);		
     
