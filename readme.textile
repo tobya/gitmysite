@@ -1,0 +1,3 @@
+h1. Git My Site 
+
+A simple script to maintain a git repository of your custom site via a php script.
