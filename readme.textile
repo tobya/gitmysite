@@ -8,6 +8,8 @@ h2. Security
 
 Please Note:  If someone gets access to the password you have set they can very easily clone a copy of your entire website via http://www.mysite.com/.git, therefore it is important you understand the risks before installing this script.
 
+
+
 h2. Single File.
 
 The only file you need to upload to your site is the ??'gitmysite.php'?? file, the .gitignore file will be created for you.
