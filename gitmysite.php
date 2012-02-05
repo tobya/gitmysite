@@ -1,6 +1,8 @@
 <?php
 
-
+$PASS = 'mypass';
+$IsLoggedIn = false;
+CheckLogin();
 
 $mySite = new gitmysite();
 $mySite->exec(@$_REQUEST['action'], $_REQUEST);
@@ -10,6 +12,27 @@ Some interesting git resources
 http://www.draconianoverlord.com/2010/03/04/git-config.html
 */
 
+function CheckLogin()
+{
+  global $IsLoggedIn;
+  global $PASS;
+  session_start();
+  if (@$_POST['Password'] == $PASS)
+  {
+    $IsLoggedIn = True;
+    $_SESSION['pass'] = $_POST['Password'];
+    $IsLoggedIn = True;
+  }
+  else if (@$_SESSION['pass']  == $PASS)
+  {
+     $IsLoggedIn = True;
+  }
+  else
+  {
+    
+    $IsLoggedIn = false;
+  }
+}
 
 class gitmysite
 {
@@ -299,6 +322,24 @@ require valid-user
 			<div class="header ui-widget-content ">
 				<p>Git My Site  <?php echo $mySite->Version() .':' ; echo $mySite->GitRepoRoot(); ?> </p>
 			</div>
+			<?php if (!$IsLoggedIn){
+			
+			?>
+				<div id="tabs">
+				<ul>
+					<li><a href="#gitmysite_login">Login</a></li>
+				</ul>
+				<div id="gitmysite_ligin">
+				 <form action="" method="Post">
+				 <fieldset Name"Login Details">
+				 <input type=password name=Password>
+				 <input type=Submit Value="Login">
+				 <input type=hidden name="action" value="sitelogin"
+				 </fieldset>
+				 </form>
+				</div>
+				</div>		
+			<?php } else { ?>
 			<div id="tabs">
 				<ul>
 					<li><a href="#gitmysite_setup">Setup</a></li>
@@ -389,7 +430,7 @@ require valid-user
 				</div>
 			</div>
 		</div>
-
+    <?php } //if Logged in end. ?>
 		<p>&nbsp;</p>
 	</body>
 </html>
