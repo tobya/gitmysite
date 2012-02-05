@@ -26,3 +26,22 @@ Single File.
 
 The only file you need to upload to your site is the ??'gitmysite.php'?? file, the .gitignore file will be created for you.  I wanted to do this to make it as simple as possible to install, as a result the file might be a bit confusing to read, but I feel it is worth the tradeoff.
 
+Get Involved
+------------
+
+I would be delighted if anyone wanted to help out with this project.  It works nicely for my sites, but there may be things that need to work for your sites.  Some ideas I have below.
+
+*  Create config file that sets username etc for .git
+*  Investigate if script can use a differnt name for .git directory - for security reasons
+*  Use Wizard like interface for initial git repo setup 
+*  JQuery is being loaded anyway so it would be nice to use it a bit more, maybe ajax calls with dialogs showing results.
+*  Allow users to change theme based on jQuery Theme Roller
+
+Some design decisions that are important to me.
+
+*  Single File - it must remain in a single file to upload.
+*  Secure as possible while still being usable.
+*  Options for further security such as only work when https etc.
+ 
+Send me a message to get involved.
+
