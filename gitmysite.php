@@ -1,38 +1,13 @@
 <?php
 
-$PASS = 'mypass';
+$PASS = 'AS83422'; //PLEASE CHANGE THIS PASSWORD BEFORE UPLOADING
 $IsLoggedIn = false;
 CheckLogin();
 
 $mySite = new gitmysite();
 $mySite->exec(@$_REQUEST['action'], $_REQUEST);
 
-/*
-Some interesting git resources
-http://www.draconianoverlord.com/2010/03/04/git-config.html
-*/
 
-function CheckLogin()
-{
-  global $IsLoggedIn;
-  global $PASS;
-  session_start();
-  if (@$_POST['Password'] == $PASS)
-  {
-    $IsLoggedIn = True;
-    $_SESSION['pass'] = $_POST['Password'];
-    $IsLoggedIn = True;
-  }
-  else if (@$_SESSION['pass']  == $PASS)
-  {
-     $IsLoggedIn = True;
-  }
-  else
-  {
-    
-    $IsLoggedIn = false;
-  }
-}
 
 class gitmysite
 {
@@ -239,14 +214,14 @@ require valid-user
   
   function ToDo()
   {
-  	$Issues[] = "Properly encode .htpasswd apache passwords";
+  	$Issues[] = "";
   
   	return $Issues;
   }
   
   function Version()
   {
-  	return '0.4.2';
+  	return '0.4.3';
   }
   
   function GitRepoExists()
@@ -269,6 +244,37 @@ require valid-user
 		return $_SERVER['SERVER_NAME'] . $info['dirname'];
 	
 	}  
+}
+
+function CheckLogin()
+{
+  global $IsLoggedIn;
+  global $PASS;
+  global $PasswordIsDefault;
+  $Default = 'AS83422'; //dont change;
+  $PasswordIsDefault = false;
+  session_start();
+  if (@$_POST['Password'] == $PASS)
+  {
+    $IsLoggedIn = True;
+    $_SESSION['pass'] = $_POST['Password'];
+    $IsLoggedIn = True;
+  }
+  else if (@$_SESSION['pass']  == $PASS)
+  {
+     $IsLoggedIn = True;
+  }
+  else
+  {
+    
+    $IsLoggedIn = false;
+  }
+  
+  //for security check whether password has been updated.
+  if ($Default == $PASS)
+  {
+    $PasswordIsDefault = true;
+  }
 }
   
 ?>
@@ -322,7 +328,9 @@ require valid-user
 				<p>Git My Site  <?php echo $mySite->Version() .':' ; echo $mySite->GitRepoRoot(); ?> </p>
 			</div>
 			<?php if (!$IsLoggedIn){
-			
+                  if ($PasswordIsDefault) {
+              			  echo '<div class="ui-state-error">Please change Default Password $PASS in gitmysit.php script</div>' ;
+			            }
 			?>
 				<div id="tabs">
 				<ul>
