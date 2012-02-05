@@ -6,5 +6,6 @@
 *.jpg
 *.png
 *.bmp
-*.gif        
+*.gif   
+.gitignore     
         
