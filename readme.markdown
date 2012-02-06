@@ -40,7 +40,7 @@ I would be delighted if anyone wanted to help out with this project.  It works n
 *  Allow users to change theme based on jQuery Theme Roller
 
 Some design decisions that are important to me.
------------------------------------------------
+-----------------------------------------------  
 
 *  Single File - it must remain in a single file to upload.
 *  Secure as possible while still being usable.
