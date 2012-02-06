@@ -4,7 +4,9 @@ Git My Site
 
 A simple script to maintain a git repository of your custom site via a php script.
 
-This is different to having a fully blown git instance on your server.  It is essentially a readonly repo from outside the server.  The php script 'gitmysite.php' has a number of commands it can carry out primarily based around adding and committing (no branching, merging etc, thats too complex for this).  You can clone the repo to your own machine via http access, but you cant publish to the online repo.  It is purely to give you a record of what you have changed if like me you are in a situation where you need to edit live / production files without using an intermediate source code repository.
+This is different to having a fully blown git instance on your server.  It is essentially a readonly repo from outside the server.  The php script 'gitmysite.php' has a number of commands it can carry out primarily based around adding and committing (no branching, merging etc, thats too complex for this).  You can clone the repo to your own machine via http access, but you cant publish to the online repo.  
+
+The purpose of the script and the git repository is purely to give you a record of what you have changed.  This is very useful if like me you are in a situation where you need to edit live / production files without using an intermediate source code repository.
 
 Security
 --------
@@ -40,6 +42,7 @@ I would be delighted if anyone wanted to help out with this project.  It works n
 *  Allow users to change theme based on jQuery Theme Roller
 
 Some design decisions that are important to me.
+-----------------------------------------------  
 
 *  Single File - it must remain in a single file to upload.
 *  Secure as possible while still being usable.
