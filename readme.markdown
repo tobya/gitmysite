@@ -21,7 +21,7 @@ Obviously you should pick a decent password since anyone who can guess your pass
 
 The Script assumes you are the only one with access to the .git directory from the ftp or server side, so once a .htaccess file with a password has been created, it cannot be updated by the script.  You must delete the files via ftp first.  This prevents someone who gets access to the gitmysite.php script from changing the password to your repo. 
 
-pick a good password.
+*Pick a good password.*
 
 Single File.
 ------------
