@@ -2,9 +2,9 @@
 
 $PASS = 'AS83422'; //PLEASE CHANGE THIS PASSWORD BEFORE UPLOADING
 $IsLoggedIn = false;
-CheckLogin();
-
 $mySite = new gitmysite();
+
+CheckLogin($mySite);
 $mySite->exec(@$_REQUEST['action'], $_REQUEST);
 
 
@@ -12,17 +12,18 @@ $mySite->exec(@$_REQUEST['action'], $_REQUEST);
 class gitmysite
 {
 
-    private $allowed_actions = 'status add commit update-server-info creategitignore editgitignore showgitignore status init username log apache_secure diff';
+    private $allowed_actions = 'status add commit update-server-info creategitignore editgitignore showgitignore status init username log apache_secure diff sitelogin';
     
     private $QueryVars = array();
     private $gitCommand = '';
     private $ignoreFileName = '.gitignore';
     public $gitOutput = array();
     public $file_gitignore = '';
+    public $Errors = array();
     
     function gitmysite()
     {
-
+      //Does anything need to be done on creation?
     }
     
     function exec($usercmd, $QueryVars)
@@ -34,6 +35,7 @@ class gitmysite
     	  $Require_Execute = true;
     	 //$output = 
     	  $this->gitOutput = array();
+    	  
     	//Check if gitcommand is allowed.  
     	if (strpos($this->allowed_actions, $usercmd) !== false)
     	{
@@ -72,7 +74,7 @@ class gitmysite
    				  }
    				  else
    				  {
-   				    $output[] = 'Directory already contains .htaccess file, please delete via ftp or modify manually';
+   				    $this->Errors[] = 'Directory already contains .htaccess file, please delete via ftp or modify manually';
    				  }
    				  	$Require_Execute = false;	
 	    			break;	
@@ -106,8 +108,11 @@ class gitmysite
     	}  
     	else
     	{
-    	  echo 'not an allowable command';
+    	 $this->Errors[] =   $usercmd . ' is not an allowable command';
     	}  
+    	
+    	
+    	
     }
     
 
@@ -172,7 +177,12 @@ require valid-user
   
   function get_gitIgnoreFile()
   {
-   //echo $this->ignoreFileName;
+
+    if (!file_exists(  $this->ignoreFileName)) {
+      $this->Errors[] = '.gitignore file does not exist.';
+      return false; 
+    }
+
     $this->file_gitignore =  file_get_contents($this->ignoreFileName);
    // print_r($this->file_gitignore);
     return true;
@@ -246,7 +256,7 @@ require valid-user
 	}  
 }
 
-function CheckLogin()
+function CheckLogin(&$GitMySite)
 {
   global $IsLoggedIn;
   global $PASS;
@@ -268,13 +278,17 @@ function CheckLogin()
   {
     
     $IsLoggedIn = false;
+    $GitMySite->Errors[] = 'Login Failed';
   }
   
   //for security check whether password has been updated.
   if ($Default == $PASS)
   {
     $PasswordIsDefault = true;
+    
   }
+  
+  
 }
   
 ?>
@@ -322,14 +336,34 @@ function CheckLogin()
 	});
 		</script>
 	</head>
-	<body>
-		<div class="demo">
-			<div class="header ui-widget-content ">
+	<body >
+		<div class="demo">		
+			<div class="header ui-widget-content ui-corner-all ">
 				<p>Git My Site  <?php echo $mySite->Version() .':' ; echo $mySite->GitRepoRoot(); ?> </p>
 			</div>
-			<?php if (!$IsLoggedIn){
+			<?php  
+
+
+
+						foreach ($mySite->Errors as $Error)
+						{
+										    echo "<div class='ui-state-error ui-corner-all' style='padding: 0 .7em;'> 
+					<p><span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span> 
+					$Error </p>
+				</div>";
+						}
+
+
+			?>
+			
+			
+			<?php if (!$IsLoggedIn) //not logged in show the login form.
+			{
                   if ($PasswordIsDefault) {
-              			  echo '<div class="ui-state-error">Please change Default Password $PASS in gitmysit.php script</div>' ;
+              			  echo "<div class='ui-state-error ui-corner-all' style='padding: 0 .7em;'> 
+					<p><span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span> 
+					Please change Default Password $PASS in gitmysit.php script </p>
+				</div>" ;
 			            }
 			?>
 				<div id="tabs">
@@ -346,7 +380,8 @@ function CheckLogin()
 				 </form>
 				</div>
 				</div>		
-			<?php } else { ?>
+			<?php } else //User is Logged in, show the main sections. 
+			{ ?>
 			<div id="tabs">
 				<ul>
 					<li><a href="#gitmysite_setup">Setup</a></li>
@@ -403,7 +438,7 @@ function CheckLogin()
 				</div>
 				<div id="gitmysite_commit">
 					<p>&nbsp; </p>
-					<p><a href="gitmysite.php?action=add">Add New &amp; Updated Files</a> - 
+					<p><a href="gitmysite.php?action=add#gitmysite_results">Add New &amp; Updated Files</a> - 
 					Commit Files
 					<form name="form1" method="get" action="gitmysite.php">
 						<p class="sectionheader">Commit Comment</p>

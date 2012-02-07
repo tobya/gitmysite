@@ -13,7 +13,7 @@ Security
 
 Please Note:  If someone gets access to the password you have set they can very easily clone a copy of your entire website via http://www.mysite.com/.git, therefore it is important you understand the risks before installing this script.
 
-When you first visit the script at http://www.yoursite.com/gitmysite.php you will be asked for a password.  This password should be set by you on the firstline of the script.  This is very basic security.  Once you have created the .git repository, you have the option of setting a password for the .git folder via a .htaccess file *This is Strongly Recommended* and will probably be forced soon.
+When you first visit the script at http://www.yoursite.com/gitmysite.php you will be asked for a password.  This password should be set by you on the firstline of the script.  This is very basic security.  Once you have created the .git repository, you have the option of setting a password for the .git folder via a .htaccess file **This is Strongly Recommended** and will probably be forced soon.
 
 Obviously you should pick a decent password since anyone who can guess your password can clone a copy of you site by doing the following.
 
@@ -22,6 +22,7 @@ Obviously you should pick a decent password since anyone who can guess your pass
 The Script assumes you are the only one with access to the .git directory from the ftp or server side, so once a .htaccess file with a password has been created, it cannot be updated by the script.  You must delete the files via ftp first.  This prevents someone who gets access to the gitmysite.php script from changing the password to your repo. 
 
 *Pick a good password.*
+
 
 Single File.
 ------------
@@ -48,5 +49,5 @@ Some design decisions that are important to me.
 *  Secure as possible while still being usable.
 *  Options for further security such as only work when https etc.
  
-Send me a message to get involved.
+Send me a message or just fork to get involved.
 
