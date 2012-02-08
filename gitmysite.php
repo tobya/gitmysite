@@ -316,7 +316,7 @@ function CheckLogin(&$GitMySite)
 .header {
 	font-size: x-large;
 	font-weight: bold;
-	color: #CCCCCC;
+	color: #ffffff;
 	
 }
 .results {
@@ -339,7 +339,7 @@ function CheckLogin(&$GitMySite)
 	<body >
 		<div class="demo">		
 			<div class="header ui-widget-content ui-corner-all ">
-				<p>Git My Site  <?php echo $mySite->Version() .':' ; echo $mySite->GitRepoRoot(); ?> </p>
+				<p>Git My Site  <?php echo $mySite->Version() .': ' ; echo $mySite->GitRepoRoot(); ?> </p>
 			</div>
 			<?php  
 
@@ -422,19 +422,23 @@ function CheckLogin(&$GitMySite)
 						</p>
 					</form>
 					<p class="sectionheader">Create and Edit Git Ignore File </p>
+					
 					<?php if ($mySite->file_gitignore > '') {  ?>
-					<form action=gitmysite.php method=post>
-						<textarea name='content_gitignore' cols="40" rows="12"><?php echo $mySite->file_gitignore ; ?></textarea>
-						<input type=hidden  name="action" value="editgitignore">
-						<input type="submit" name="Submit" value="Save .gitignore">
-					</form>
+					
+      					<form action=gitmysite.php method=post>
+      						<textarea name='content_gitignore' cols="40" rows="12"><?php echo $mySite->file_gitignore ; ?></textarea>
+      						<input type=hidden  name="action" value="editgitignore">
+      						<input type="submit" name="Submit" value="Save .gitignore">
+      					</form>
+      					
 					<?php } 
-					else
-					{
-					?>
-					<p><a href="gitmysite.php?action=creategitignore">Create .gitignore</a> </p>
-					<p><a href="gitmysite.php?action=showgitignore">Edit .gitignore</a> </p>
+					else	{	?>
+					
+      					<p><a href="gitmysite.php?action=creategitignore">Create .gitignore</a> </p>
+      					<p><a href="gitmysite.php?action=showgitignore">Edit .gitignore</a> </p>
+				
 					<?php } ?>
+				
 				</div>
 				<div id="gitmysite_commit">
 					<p>&nbsp; </p>
