@@ -1,6 +1,6 @@
 <?php
 
-$PASS = 'AS83422'; //PLEASE CHANGE THIS PASSWORD BEFORE UPLOADING
+$PASS = '45Msdsf'; //PLEASE CHANGE THIS PASSWORD BEFORE UPLOADING
 $IsLoggedIn = false;
 $mySite = new gitmysite();
 
@@ -97,12 +97,12 @@ class gitmysite
         		  exec("git " . $cmd,  $this->gitOutput); 
         		 // echo "git " . $cmd;
         		 
-        		}
-            //because we are a dumb server, call serverupdate
-        		 
-        		exec("git update-server-info",  $this->gitOutput);
+        		  }
+        		  
+              //because we are a dumb server, call serverupdate        		 
+        		  exec("git update-server-info",  $this->gitOutput);
         		
-        	}
+        	  }
         	
         	
     	}  
@@ -194,6 +194,9 @@ require valid-user
     return true;
   }
   
+  /*
+  	I'm sure there is a better way to do this, just can see it now.
+  */
   function ensure_finalslash($path)
   {
   	if (strrpos($path, "/") == (strlen($path) -1))
@@ -210,16 +213,7 @@ require valid-user
   
   function gitDirectorySecured()
   {
-    if (file_exists('.git/.htaccess'))
-    {
-      //echo 'yes';
-      return true;
-    }
-    else
-    {
-      //echo 'no';
-      return false;
-    }
+    return file_exists('.git/.htaccess');
   }
   
   function ToDo()
@@ -231,7 +225,7 @@ require valid-user
   
   function Version()
   {
-  	return '0.4.3';
+  	return '0.4.4';
   }
   
   function GitRepoExists()
@@ -261,7 +255,7 @@ function CheckLogin(&$GitMySite)
   global $IsLoggedIn;
   global $PASS;
   global $PasswordIsDefault;
-  $Default = 'AS83422'; //dont change;
+  $Default = '45Msdsf'; //dont change;
   $PasswordIsDefault = false;
   session_start();
   if (@$_POST['Password'] == $PASS)
@@ -347,10 +341,8 @@ function CheckLogin(&$GitMySite)
 
 						foreach ($mySite->Errors as $Error)
 						{
-										    echo "<div class='ui-state-error ui-corner-all' style='padding: 0 .7em;'> 
-					<p><span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span> 
-					$Error </p>
-				</div>";
+						    echo "<div class='ui-state-error ui-corner-all' style='padding: 0 .7em;'> 
+            					<p><span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span> 					            $Error </p></div>";
 						}
 
 
@@ -359,12 +351,9 @@ function CheckLogin(&$GitMySite)
 			
 			<?php if (!$IsLoggedIn) //not logged in show the login form.
 			{
-                  if ($PasswordIsDefault) {
-              			  echo "<div class='ui-state-error ui-corner-all' style='padding: 0 .7em;'> 
-					<p><span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span> 
-					Please change Default Password $PASS in gitmysit.php script </p>
-				</div>" ;
-			            }
+          if ($PasswordIsDefault) {
+        		  echo "<div class='ui-state-error ui-corner-all' style='padding: 0 .7em;'> 		    			<p><span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span>     					Please change Default Password $PASS in gitmysit.php script </p>		</div>" ;
+			        }
 			?>
 				<div id="tabs">
 				<ul>
