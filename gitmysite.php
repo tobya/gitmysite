@@ -1,6 +1,6 @@
 <?php
 
-$PASS = 'AS83422'; //PLEASE CHANGE THIS PASSWORD BEFORE UPLOADING
+$PASS = '2sagaww'; //PLEASE CHANGE THIS PASSWORD BEFORE UPLOADING
 $IsLoggedIn = false;
 $mySite = new gitmysite();
 
@@ -12,7 +12,7 @@ $mySite->exec(@$_REQUEST['action'], $_REQUEST);
 class gitmysite
 {
 
-    private $allowed_actions = 'status add commit update-server-info creategitignore editgitignore showgitignore status init username log apache_secure diff sitelogin';
+    private $allowed_actions = 'status add commit addcommit update-server-info creategitignore editgitignore showgitignore status init username log apache_secure diff sitelogin';
     
     private $QueryVars = array();
     private $gitCommand = '';
@@ -28,12 +28,13 @@ class gitmysite
     
     function exec($usercmd, $QueryVars)
     {
-		if ($usercmd == '') {return;}
+		  if ($usercmd == '') {return;}
 		
-		$this->QueryVars = $QueryVars;
+		  $this->QueryVars = $QueryVars;
 		 // $this->getgitIgnoreFile();	
-    	  $Require_Execute = true;
-    	 //$output = 
+		 
+		    //Defaults
+    	  $Require_Execute = true;    	
     	  $this->gitOutput = array();
     	  
     	//Check if gitcommand is allowed.  
@@ -52,6 +53,13 @@ class gitmysite
     			
     				$gitexec[] = " commit -m \"$Comment\" ";
     				break;
+    			
+    			case 'addcommit':
+    			
+    				$Comment =  isset($QueryVars['commit_comment']) ? $QueryVars['commit_comment'] : 'an update';
+    			
+    				$gitexec[] = " commit -a -m \"$Comment\" ";
+    				break;    				
     			case 'creategitignore':
     			  $this->create_gitIgnoreFile();
     			  $Require_Execute = false;
@@ -89,20 +97,18 @@ class gitmysite
     
             if ($Require_Execute)
             {        
-        		$output = array();
-        		//$this->gitCommand = "git $gitexec";
+          		$output = array();
             	$this->gitCommand = implode(';', $gitexec);
+  
             	foreach ($gitexec as $cmd)
             	{
-        		  exec("git " . $cmd,  $this->gitOutput); 
-        		 // echo "git " . $cmd;
-        		 
-        		}
-            //because we are a dumb server, call serverupdate
-        		 
-        		exec("git update-server-info",  $this->gitOutput);
+        		      exec("git " . $cmd,  $this->gitOutput); 
+        		  }
+        		  
+              //because we are a dumb server, call serverupdate        		 
+        		  exec("git update-server-info",  $this->gitOutput);
         		
-        	}
+        	  }
         	
         	
     	}  
@@ -194,6 +200,9 @@ require valid-user
     return true;
   }
   
+  /*
+  	I'm sure there is a better way to do this, just can see it now.
+  */
   function ensure_finalslash($path)
   {
   	if (strrpos($path, "/") == (strlen($path) -1))
@@ -210,16 +219,7 @@ require valid-user
   
   function gitDirectorySecured()
   {
-    if (file_exists('.git/.htaccess'))
-    {
-      //echo 'yes';
-      return true;
-    }
-    else
-    {
-      //echo 'no';
-      return false;
-    }
+    return file_exists('.git/.htaccess');
   }
   
   function ToDo()
@@ -231,7 +231,7 @@ require valid-user
   
   function Version()
   {
-  	return '0.4.3';
+  	return '0.4.5';
   }
   
   function GitRepoExists()
@@ -261,7 +261,7 @@ function CheckLogin(&$GitMySite)
   global $IsLoggedIn;
   global $PASS;
   global $PasswordIsDefault;
-  $Default = 'AS83422'; //dont change;
+  $Default = '2sagaww'; //dont change;
   $PasswordIsDefault = false;
   session_start();
   if (@$_POST['Password'] == $PASS)
@@ -296,7 +296,7 @@ function CheckLogin(&$GitMySite)
 <html>
 	<head>
 		<title>Git my Site</title>
-		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/le-frog/jquery-ui.css" rel="stylesheet" type="text/css">
+		<link   href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/le-frog/jquery-ui.css" rel="stylesheet" type="text/css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js" type="text/javascript"></script>
 		<style type="text/css">
@@ -347,10 +347,10 @@ function CheckLogin(&$GitMySite)
 
 						foreach ($mySite->Errors as $Error)
 						{
-										    echo "<div class='ui-state-error ui-corner-all' style='padding: 0 .7em;'> 
-					<p><span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span> 
-					$Error </p>
-				</div>";
+						    echo "<div class='ui-state-error ui-corner-all' style='padding: 0 .7em;'> 
+
+            					<p><span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span> 
+					            $Error </p></div>";
 						}
 
 
@@ -359,12 +359,11 @@ function CheckLogin(&$GitMySite)
 			
 			<?php if (!$IsLoggedIn) //not logged in show the login form.
 			{
-                  if ($PasswordIsDefault) {
-              			  echo "<div class='ui-state-error ui-corner-all' style='padding: 0 .7em;'> 
-					<p><span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span> 
-					Please change Default Password $PASS in gitmysit.php script </p>
-				</div>" ;
-			            }
+          if ($PasswordIsDefault) {
+        		  echo "<div class='ui-state-error ui-corner-all' style='padding: 0 .7em;'> 
+		    			<p><span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span> 
+    					Please change Default Password $PASS in gitmysit.php script </p>		</div>" ;
+			        }
 			?>
 				<div id="tabs">
 				<ul>
@@ -387,7 +386,6 @@ function CheckLogin(&$GitMySite)
 					<li><a href="#gitmysite_setup">Setup</a></li>
 					<li><a href="#gitmysite_commit">Add &amp; Commit</a></li>
 					<li><a href="#gitmysite_status">Status</a></li>
-					<li><a href="#gitmysite_results">Results</a></li>
 				</ul>
 				<div id="gitmysite_setup">
 					<div class="demo-description" style="display: none; ">
@@ -399,9 +397,11 @@ function CheckLogin(&$GitMySite)
 					- </p>
 					<?php }; ?>
 					<p class="sectionheader">Secure the Directory</p>
-					<div class="sectioncomments">Provide a username and password to secure your .git directory.  You can also use this username and password when you clone your repo to your local machine.  
-					<strong>Note:</strong>  Clicking Submit will not overwrite any existing .htaccess and .htpasswd file you have in the .git folder. Please delete first or edit manually</div>
-					<form name="form2" method="post" action="gitmysite.php#gitmysite_results">
+					<div class="sectioncomments">Provide a username and password to secure your .git directory.  You can also use this username and password when 
+					you clone your repo to your local machine.  
+					<strong>Note:</strong>  Clicking Submit will not overwrite any existing .htaccess and .htpasswd file you have in the .git folder. 
+					Please delete first or edit manually</div>
+					<form name="form2" method="post" action="gitmysite.php##gitmysite_status">
 						Username:
 						<input type="text" name="apache_username"> <BR>
 						Password:
@@ -441,22 +441,19 @@ function CheckLogin(&$GitMySite)
 				
 				</div>
 				<div id="gitmysite_commit">
-					<p>&nbsp; </p>
-					<p><a href="gitmysite.php?action=add#gitmysite_results">Add New &amp; Updated Files</a> - 
-					Commit Files
-					<form name="form1" method="get" action="gitmysite.php">
+				
+					Add and Commit Files
+					<form name="form1" method="get" action="gitmysite.php#gitmysite_status">
 						<p class="sectionheader">Commit Comment</p>
 						<textarea name="commit_comment" cols="80" rows="6">An Update
 						</textarea>
-						<input type=hidden  name="action" value="commit">
+						<input type=hidden  name="action" value="addcommit">
 						<input type="submit" name="Submit" value="Submit">
 						</p>
 					</form>
 				</div>
 				<div id="gitmysite_status">
-				</div>
-				<div  id="gitmysite_results">
-					- <a href="gitmysite.php?action=status#gitmysite_results">Status</a> -  <a href="gitmysite.php?action=log#gitmysite_results">Log</a> -</p>
+					- <a href="gitmysite.php?action=status#gitmysite_status">Status</a> -  <a href="gitmysite.php?action=log#gitmysite_status">Log</a> -</p>
 			
 					<p>Command Results </p>
 					 
