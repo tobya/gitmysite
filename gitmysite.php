@@ -1,6 +1,6 @@
 <?php
 
-$PASS = '2sagaww'; //PLEASE CHANGE THIS PASSWORD BEFORE UPLOADING
+$PASS = '2mnn7ww'; //PLEASE CHANGE THIS PASSWORD BEFORE UPLOADING
 $IsLoggedIn = false;
 $mySite = new gitmysite();
 
@@ -231,7 +231,7 @@ require valid-user
   
   function Version()
   {
-  	return '0.4.5';
+  	return '0.4.6';
   }
   
   function GitRepoExists()
@@ -261,10 +261,14 @@ function CheckLogin(&$GitMySite)
   global $IsLoggedIn;
   global $PASS;
   global $PasswordIsDefault;
-  $Default = '2sagaww'; //dont change;
+  $Default = '2mnn7ww'; //dont change;
   $PasswordIsDefault = false;
   session_start();
-  if (@$_POST['Password'] == $PASS)
+  if (!isset($_POST['Password']))
+  {
+    $IsLoggedIn = false;
+  } 
+  elseif ($_POST['Password'] == $PASS)
   {
     $IsLoggedIn = True;
     $_SESSION['pass'] = $_POST['Password'];
@@ -290,6 +294,7 @@ function CheckLogin(&$GitMySite)
   
   
 }
+  
   
 ?>
 
@@ -442,7 +447,9 @@ function CheckLogin(&$GitMySite)
 				</div>
 				<div id="gitmysite_commit">
 				
-					Add and Commit Files
+				  <a href=''>Add New Files if Any</A>
+				
+					Add Modified Files and Commit
 					<form name="form1" method="get" action="gitmysite.php#gitmysite_status">
 						<p class="sectionheader">Commit Comment</p>
 						<textarea name="commit_comment" cols="80" rows="6">An Update
