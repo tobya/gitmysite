@@ -27,7 +27,7 @@ The Script assumes you are the only one with access to the .git directory from t
 Installation
 ------------
 
-The only file you need to upload to your site is the *['gitmysite.php'][https://raw.github.com/tobya/gitmysite/master/gitmysite.php]* file, the .gitignore file will be created for you.  I wanted to do this to make it as simple as possible to install, as a result the file might be a bit confusing to read, but I feel it is worth the tradeoff.
+The only file you need to upload to your site is the ['gitmysite.php'] (https://raw.github.com/tobya/gitmysite/master/gitmysite.php) file, the .gitignore file will be created for you.  I wanted to do this to make it as simple as possible to install, as a result the file might be a bit confusing to read, but I feel it is worth the tradeoff.
 
 To install place the gitmysite.php script in the root directory you wish to control, change the value assigned to the $PASS variable and visit in your browser.
 
