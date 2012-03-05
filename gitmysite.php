@@ -13,13 +13,12 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ****************************************************************/
 
-$PASS = '2mnn7ww'; //PLEASE CHANGE THIS PASSWORD BEFORE UPLOADING
+$PASS = 'mypass'; //PLEASE CHANGE THIS PASSWORD BEFORE UPLOADING
 $IsLoggedIn = false;
 $mySite = new gitmysite();
 
 CheckLogin($mySite);
 $mySite->exec(@$_REQUEST['action'], $_REQUEST);
-
 
 
 class gitmysite
@@ -71,7 +70,8 @@ class gitmysite
     			
     				$Comment =  isset($QueryVars['commit_comment']) ? $QueryVars['commit_comment'] : 'an update';
     			
-    				$gitexec[] = " commit -a -m \"$Comment\" ";
+    			  $gitexec[] = " add -A "; //Add all files modified and new files first.  git commit -a wont do as it does not add new files.
+    				$gitexec[] = " commit -m \"$Comment\" ";
     				break;    				
     			case 'creategitignore':
     			  $this->create_gitIgnoreFile();
@@ -244,7 +244,7 @@ require valid-user
   
   function Version()
   {
-  	return '0.4.6';
+  	return '0.4.7';
   }
   
   function GitRepoExists()
@@ -274,14 +274,11 @@ function CheckLogin(&$GitMySite)
   global $IsLoggedIn;
   global $PASS;
   global $PasswordIsDefault;
-  $Default = '2mnn7ww'; //dont change;
+  $Default = '2X44854w'; //dont change;
   $PasswordIsDefault = false;
   session_start();
-  if (!isset($_POST['Password']))
-  {
-    $IsLoggedIn = false;
-  } 
-  elseif ($_POST['Password'] == $PASS)
+  
+  if (@$_POST['Password'] == $PASS)
   {
     $IsLoggedIn = True;
     $_SESSION['pass'] = $_POST['Password'];
