@@ -118,7 +118,7 @@ class gitmysite
         		      exec("git " . $cmd,  $this->gitOutput); 
         		  }
         		  
-              //because we are a dumb server, call serverupdate        		 
+              //because we are a dumb server, call serverupdate after each time we execute commands.       		 
         		  exec("git update-server-info",  $this->gitOutput);
         		
         	  }
@@ -374,6 +374,8 @@ function CheckLogin(&$GitMySite)
 			
 			<?php if (!$IsLoggedIn) //not logged in show the login form.
 			{
+			    //Display a note to indicate to the user that they should change the default password.
+			    //Nothing like showing the password in plaintext to get people to act.
           if ($PasswordIsDefault) {
         		  echo "<div class='ui-state-error ui-corner-all' style='padding: 0 .7em;'> 
 		    			<p><span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span> 
@@ -460,7 +462,7 @@ function CheckLogin(&$GitMySite)
 				  <a href=''>Add New Files if Any</A>
 				
 					Add Modified Files and Commit
-					<form name="form1" method="get" action="gitmysite.php#gitmysite_status">
+					<form name="form1" method="get" action="gitmysite.php?#gitmysite_status">
 						<p class="sectionheader">Commit Comment</p>
 						<textarea name="commit_comment" cols="80" rows="6">An Update
 						</textarea>
