@@ -462,7 +462,7 @@ function CheckLogin(&$GitMySite)
 				  <a href=''>Add New Files if Any</A>
 				
 					Add Modified Files and Commit
-					<form name="form1" method="get" action="gitmysite.php?#gitmysite_status">
+					<form name="form1" method="post" action="gitmysite.php?#gitmysite_status">
 						<p class="sectionheader">Commit Comment</p>
 						<textarea name="commit_comment" cols="80" rows="6">An Update
 						</textarea>
