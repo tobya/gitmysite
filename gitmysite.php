@@ -13,7 +13,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ****************************************************************/
 
-$PASS = 'mypass'; //PLEASE CHANGE THIS PASSWORD BEFORE UPLOADING
+$PASS = 's52klnalk'; //PLEASE CHANGE THIS PASSWORD BEFORE UPLOADING
 $IsLoggedIn = false;
 $mySite = new gitmysite();
 
@@ -274,7 +274,7 @@ function CheckLogin(&$GitMySite)
   global $IsLoggedIn;
   global $PASS;
   global $PasswordIsDefault;
-  $Default = '2X44854w'; //dont change;
+  $Default = 's52klnalk'; //dont change;
   $PasswordIsDefault = false;
   session_start();
   
