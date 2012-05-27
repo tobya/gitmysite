@@ -48,12 +48,6 @@ I would be delighted if anyone wanted to help out with this project.  It works n
 *  JQuery is being loaded anyway so it would be nice to use it a bit more, maybe ajax calls with dialogs showing results.
 *  Allow users to change theme based on jQuery Theme Roller
 
-Some design decisions that are important to me.
------------------------------------------------  
-
-*  Single File - it must remain in a single file to upload.
-*  Secure as possible while still being usable.
-*  Options for further security such as only work when https etc.
  
 Send me a message or just fork to get involved.
 

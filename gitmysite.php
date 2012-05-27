@@ -416,7 +416,9 @@ function CheckLogin(&$GitMySite)
 					<p class="sectionheader">Secure the Directory</p>
 					<div class="sectioncomments">Provide a username and password to secure your .git directory.  You can also use this username and password when 
 					you clone your repo to your local machine.  
-					<strong>Note:</strong>  Clicking Submit will not overwrite any existing .htaccess and .htpasswd file you have in the .git folder. 
+					
+					<strong>Note:</strong>  
+					Clicking Submit will not overwrite any existing .htaccess and .htpasswd file you have in the .git folder. 
 					Please delete first or edit manually</div>
 					<form name="form2" method="post" action="gitmysite.php##gitmysite_status">
 						Username:
