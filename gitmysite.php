@@ -13,7 +13,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ****************************************************************/
 
-$PASS = 's52klnalk'; //PLEASE CHANGE THIS PASSWORD BEFORE UPLOADING
+$PASS = 'default'; //PLEASE CHANGE THIS PASSWORD BEFORE UPLOADING
 $IsLoggedIn = false;
 $mySite = new gitmysite();
 
@@ -24,7 +24,7 @@ $mySite->exec(@$_REQUEST['action'], $_REQUEST);
 class gitmysite
 {
 
-    private $allowed_actions = 'status add commit addcommit update-server-info creategitignore editgitignore showgitignore status init username log apache_secure diff sitelogin';
+    private $allowed_actions = 'status add add-preview commit addcommit update-server-info creategitignore editgitignore showgitignore status init username log apache_secure diff sitelogin';
     
     private $QueryVars = array();
     private $gitCommand = '';
@@ -59,6 +59,10 @@ class gitmysite
     				$gitexec[] = ' add -A';
     				$gitexec[] = ' status'; //print out status after
     				break;
+    			case 'add-preview' :
+    			
+    				$gitexec[] = ' add -A --dry-run';    				
+    				break;
     			case 'commit':
     			
     				$Comment =  isset($QueryVars['commit_comment']) ? $QueryVars['commit_comment'] : 'an update';
@@ -78,31 +82,32 @@ class gitmysite
     			  $Require_Execute = false;
     			  break;
     			case 'showgitignore':
-    		    $this->get_gitIgnoreFile();	
+    		    		$this->get_gitIgnoreFile();	
     		    
-    		     $Require_Execute = false;
+    		     		$Require_Execute = false;
     			  break;
     			case 'editgitignore':
-    		    $this->update_gitIgnoreFile($QueryVars['content_gitignore']);	
+    		    		$this->update_gitIgnoreFile($QueryVars['content_gitignore']);	
     		    
-    		     $Require_Execute = false;
+    		     		$Require_Execute = false;
     			  break;    			  
     			case 'apache_secure':
-            if ($this->gitDirectorySecured() == false)
-            {
-    				$this->createApacheSecurityFiles($this->QueryVars['apache_username'],$this->QueryVars['apache_pass']);		
+      			if ($this->gitDirectorySecured() == false)
+      			{
+    					$this->createApacheSecurityFiles($this->QueryVars['apache_username'],$this->QueryVars['apache_pass']);		
    				  
-   				  }
-   				  else
-   				  {
-   				    $this->Errors[] = 'Directory already contains .htaccess file, please delete via ftp or modify manually';
-   				  }
-   				  	$Require_Execute = false;	
+	   				}
+	   				else
+	   				{
+	   				    $this->Errors[] = 'Directory already contains .htaccess file, please delete via ftp or modify manually';
+	   				}
+   					$Require_Execute = false;	
 	    			break;	
+	    			
     			case 'username':
-            $gitexec[] = " config --local user.name \"$this->QueryVars[username]\" ";
-            $gitexec[] = " config --local user.email $this->QueryVars[email] ";            
-    			  break;    			  
+		            $gitexec[] = " config --local user.name \"$this->QueryVars[username]\" ";
+		            $gitexec[] = " config --local user.email $this->QueryVars[email] ";            
+		    	    break;    			  
     			default :
     				$gitexec[] = $git_action; 
     		}
@@ -110,9 +115,10 @@ class gitmysite
     
             if ($Require_Execute)
             {        
-          		$output = array();
+                $output = array();
             	$this->gitCommand = implode(';', $gitexec);
-  
+  		
+  		
             	foreach ($gitexec as $cmd)
             	{
         		      exec("git " . $cmd,  $this->gitOutput); 
@@ -121,7 +127,7 @@ class gitmysite
               //because we are a dumb server, call serverupdate after each time we execute commands.       		 
         		  exec("git update-server-info",  $this->gitOutput);
         		
-        	  }
+            }
         	
         	
     	}  
@@ -163,12 +169,17 @@ require valid-user
     function create_gitIgnoreFile($Content = 'default')
     {
     
+      if ($this->exists_gitIgnoreFile()){
+      	$this->Errors[] = '.gitignore file already exists, please edit or delete to create a new one.';
+      } else {
       
-      
-      if ($Content == 'default')
-      {
-        $Content = "   
+      	if ($Content == 'default')
+      	{
+	        $Content = "
+	           
 #Default .gitignore files for gitmysite.
+#Created by gitmysite.php https://github.com/tobya/gitmysite
+
 #Specify your own .gitignore file 
 
 *.exe
@@ -178,10 +189,11 @@ require valid-user
 *.gif        
         ";
       
+      	}
+      
+     	$this->CreateFile($this->ignoreFileName, $Content);
+      
       }
-      
-      $this->CreateFile($this->ignoreFileName, $Content);
-      
     
     }
 
@@ -197,15 +209,21 @@ require valid-user
   function get_gitIgnoreFile()
   {
 
-    if (!file_exists(  $this->ignoreFileName)) {
+    if (!$this->exists_gitIgnoreFile()) {
       $this->Errors[] = '.gitignore file does not exist.';
       return false; 
     }
 
     $this->file_gitignore =  file_get_contents($this->ignoreFileName);
-   // print_r($this->file_gitignore);
     return true;
+
   }
+  
+  function exists_gitIgnoreFile()
+  {
+	return	file_exists(  $this->ignoreFileName);
+
+  }  
   
   function update_gitIgnoreFile($file_content)
   {
@@ -262,6 +280,17 @@ require valid-user
 		return $_SERVER['SERVER_NAME'] . $info['dirname'];
 	
 	}  
+	
+	function InSetupMode(){
+		$Result = true;
+		if ($this->exists_gitIgnoreFile()) {
+			if ($this->GitRepoExists()){
+				$Result = false;
+			}
+		}
+		
+		return $Result;
+	}
 }
 
 function CheckLogin(&$GitMySite)
@@ -269,7 +298,7 @@ function CheckLogin(&$GitMySite)
   global $IsLoggedIn;
   global $PASS;
   global $PasswordIsDefault;
-  $Default = 's52klnalk'; //dont change;
+  $DefaultPassword = 'default'; //dont change;
   $PasswordIsDefault = false;
   session_start();
   
@@ -291,7 +320,7 @@ function CheckLogin(&$GitMySite)
   }
   
   //for security check whether password has been updated.
-  if ($Default == $PASS)
+  if ($DefaultPassword == $PASS)
   {
     $PasswordIsDefault = true;
     
@@ -374,7 +403,7 @@ function CheckLogin(&$GitMySite)
           if ($PasswordIsDefault) {
         		  echo "<div class='ui-state-error ui-corner-all' style='padding: 0 .7em;'> 
 		    			<p><span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em;'></span> 
-    					Please change Default Password $PASS in gitmysit.php script </p>		</div>" ;
+    					Please change Default Password $PASS in gitmysite.php script </p>		</div>" ;
 			        }
 			?>
 				<div id="tabs">
@@ -391,13 +420,21 @@ function CheckLogin(&$GitMySite)
 				 </form>
 				</div>
 				</div>		
-			<?php } else //User is Logged in, show the main sections. 
-			{ ?>
+			<?php 
+			
+			} 
+					else //User is Logged in, show the main sections. 
+			{ 
+			
+			?>
 			<div id="tabs">
 				<ul>
+					
 					<li><a href="#gitmysite_setup">Setup</a></li>
+					
 					<li><a href="#gitmysite_commit">Add &amp; Commit</a></li>
 					<li><a href="#gitmysite_status">Status</a></li>
+										
 				</ul>
 				<div id="gitmysite_setup">
 					<div class="demo-description" style="display: none; ">
@@ -407,7 +444,13 @@ function CheckLogin(&$GitMySite)
 					<p class="sectionheader">Create a New Repository in this Directory </p>
 					<p><a href="gitmysite.php?action=init">Create git Repository</a> 
 					- </p>
-					<?php }; ?>
+					<?php }; 
+					
+					if ($mySite->gitDirectorySecured()) {
+					?>
+						<p class="sectionheader">Directory Security</p>
+					<div class="sectioncomments">Your .git directory is secured with basic Auth.  If you need to update the password, please delete the .htaccess and .htpasswd files from                                       the .git directory first. </div>
+					<?php } else { ?>
 					<p class="sectionheader">Secure the Directory</p>
 					<div class="sectioncomments">Provide a username and password to secure your .git directory.  You can also use this username and password when 
 					you clone your repo to your local machine.  
@@ -423,6 +466,8 @@ function CheckLogin(&$GitMySite)
 						<input type=hidden value="apache_secure" name="action" >
 						<input type="submit" name="Submit2" value="Submit">
 					</form>
+					
+					<?php } ?>
 					<form name="form1" method="get" action="gitmysite.php">
 						<p class="sectionheader">Set User Config Details</p>
 						<p>User Details:</p>
@@ -431,7 +476,7 @@ function CheckLogin(&$GitMySite)
 						</p>
 						<p> Email:
 						<input type="text" name="email">
-						<input type=hidden value="username" name="action" >
+						<input type=hidden  name="action value="username"" >
 						<input type="submit" name="Submit" value="Submit">
 						</p>
 					</form>
@@ -440,24 +485,45 @@ function CheckLogin(&$GitMySite)
 					<?php if ($mySite->file_gitignore > '') {  ?>
 					
       					<form action=gitmysite.php method=post>
-      						<textarea name='content_gitignore' cols="40" rows="12"><?php echo $mySite->file_gitignore ; ?></textarea>
+      						<textarea name='content_gitignore' cols="80" rows="12"><?php echo $mySite->file_gitignore ; ?></textarea>
       						<input type=hidden  name="action" value="editgitignore">
-      						<input type="submit" name="Submit" value="Save .gitignore">
+      						<BR><input type="submit" name="Submit" value="Save .gitignore">
       					</form>
       					
 					<?php } 
-					else	{	?>
+					else	{	
+					
+						if (!$mySite->exists_gitIgnoreFile()) {?>
 					
       					<p><a href="gitmysite.php?action=creategitignore">Create .gitignore</a> </p>
-      					<p><a href="gitmysite.php?action=showgitignore">Edit .gitignore</a> </p>
+      					
+      					<?php } else{ ?>
+      					
+      					<p>
+      						<div class="sectioncomments">A .gitignore file exists.  Please click below to edit it.</div> <BR>
+      					<a href="gitmysite.php?action=showgitignore">Edit .gitignore</a> </p>
 				
-					<?php } ?>
+					<?php  }
+					 } ?>
 				
 				</div>
 				<div id="gitmysite_commit">
 				
-				  <a href=''>Add New Files if Any</A>
+				  <a href=''>Add New Files if Any</A> <a href="gitmysite.php?action=add-preview">(Preview)</a>
+									<p>Command Results </p>
+					 
+					<div class="results">
 				
+					<?php
+					if (isset($mySite) )
+					{ 
+						foreach ($mySite->gitOutput as $line)
+						{
+							echo "<BR>$line ";
+						}
+					}
+					?>	
+					</div>
 					Add Modified Files and Commit
 					<form name="form1" method="post" action="gitmysite.php?#gitmysite_status">
 						<p class="sectionheader">Commit Comment</p>

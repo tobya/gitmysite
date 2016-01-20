@@ -37,6 +37,12 @@ If you wish you can create and edit the .gitignore file. Next you can do an init
 
 After setup, each time you do a change simply come and click the Add Changed files button and then Give a commit message and commit.
 
+Hosting Provider
+----
+
+You will need your hosting provider to make git available on your server.  Some (such as Dreamhost) do and it works great and some don't (such as Blacknight).
+
+
 Get Involved
 ------------
 
