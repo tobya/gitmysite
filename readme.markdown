@@ -17,7 +17,7 @@ When you first visit the script at http://www.yoursite.com/gitmysite.php you wil
 
 Obviously you should pick a decent password since anyone who can guess your password can clone a copy of you site by doing the following.
 
-*  git clone http://username:password@www.yoursite.com/.git/ CloneIntoDirectory
+     git clone http://username:password@www.yoursite.com/.git/ CloneIntoDirectory
 
 The Script assumes you are the only one with access to the .git directory from the ftp or server side, so once a .htaccess file with a password has been created, it cannot be updated by the script.  You must delete the files via ftp first.  This prevents someone who gets access to the gitmysite.php script from changing the password to your repo. 
 
@@ -29,7 +29,7 @@ Installation
 
 The only file you need to upload to your site is the ['gitmysite.php'] (https://raw.github.com/tobya/gitmysite/master/gitmysite.php) file, the '.gitignore' file will be created for you.  I wanted to do this to make it as simple as possible to install, as a result the file might be a bit confusing to read, but I feel it is worth the tradeoff.
 
-To install place the gitmysite.php script in the root directory you wish to control, change the value assigned to the $PASS variable and visit in your browser.
+To install place the gitmysite.php script in the root directory you wish to control, change the default 'password' assigned to the $PASS variable and visit in your browser.
 
 When  you first login you will need to create a git repository, then set security on the .git repository either via the script or manually.  
 
